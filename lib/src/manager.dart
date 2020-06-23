@@ -181,6 +181,7 @@ class PhotoManager {
       height: height,
       format: format,
       quality: quality,
+      deliveryMode: deliveryMode
     );
   }
 
