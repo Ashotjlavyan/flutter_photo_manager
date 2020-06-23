@@ -274,6 +274,7 @@ class AssetEntity {
     int height, {
     ThumbFormat format = ThumbFormat.jpeg,
     int quality = 100,
+    DeliveryMode deliveryMode = DeliveryMode.opportunistic,
   }) {
     assert(width > 0 && height > 0, "The width and height must better 0.");
     assert(format != null, "The format must not be null.");
@@ -284,13 +285,12 @@ class AssetEntity {
       return null;
     }
 
-    return PhotoManager._getThumbDataWithId(
-      id,
-      width: width,
-      height: height,
-      format: format,
-      quality: quality,
-    );
+    return PhotoManager._getThumbDataWithId(id,
+        width: width,
+        height: height,
+        format: format,
+        quality: quality,
+        deliveryMode: deliveryMode);
   }
 
   /// if not video ,duration is null
