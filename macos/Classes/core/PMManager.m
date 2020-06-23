@@ -308,7 +308,7 @@
     PHImageManager *manager = PHImageManager.defaultManager;
     PHImageRequestOptions *options = [PHImageRequestOptions new];
 
-    options.deliveryMode = deliveryMode;
+    [options setDeliveryMode: (PHImageRequestOptionsDeliveryMode)deliveryMode];
     [options setNetworkAccessAllowed:YES];
     [options setProgressHandler:^(double progress, NSError *error, BOOL *stop,
                                   NSDictionary *info) {
