@@ -32,7 +32,7 @@ typedef void (^AssetResult)(PMAssetEntity *);
 
 - (void)clearCache;
 
-- (void)getThumbWithId:(NSString *)id width:(NSUInteger)width height:(NSUInteger)height format:(NSUInteger)format quality:(NSUInteger)quality resultHandler:(ResultHandler *)handler;
+- (void)getThumbWithId:(NSString *)id width:(NSUInteger)width height:(NSUInteger)height format:(NSUInteger)format quality:(NSUInteger)quality deliveryMode:(NSUInteger)deliveryMode resultHandler:(ResultHandler *)handler;
 
 - (void)getFullSizeFileWithId:(NSString *)id
                      isOrigin:(BOOL)isOrigin
@@ -56,7 +56,7 @@ typedef void (^AssetResult)(PMAssetEntity *);
 
 - (BOOL)existsWithId:(NSString *)assetId;
 
-- (NSString*)getTitleAsyncWithAssetId: (NSString *) assetId;
+- (NSString *)getTitleAsyncWithAssetId:(NSString *)assetId;
 
 - (void)getMediaUrl:(NSString *)assetId resultHandler:(ResultHandler *)handler;
 

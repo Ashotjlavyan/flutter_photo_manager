@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager/src/utils/convert_utils.dart';
 
+import '../photo_manager.dart';
+
 class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
   static Plugin _plugin;
 
@@ -85,6 +87,7 @@ class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
     int width = 100,
     int height = 100,
     ThumbFormat format,
+    DeliveryMode deliveryMode,
     int quality,
   }) {
     return _channel.invokeMethod("getThumb", {
@@ -93,6 +96,7 @@ class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
       "id": id,
       "format": format.index,
       "quality": quality,
+      "deliveryMode": deliveryMode.index,
     });
   }
 

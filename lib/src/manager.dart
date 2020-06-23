@@ -173,6 +173,7 @@ class PhotoManager {
     int height = 150,
     ThumbFormat format = ThumbFormat.jpeg,
     int quality = 100,
+    DeliveryMode deliveryMode = DeliveryMode.opportunistic,
   }) {
     return _plugin.getThumb(
       id: id,
