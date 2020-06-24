@@ -309,6 +309,7 @@
   PHImageRequestOptions *options = [PHImageRequestOptions new];
 
   [options setDeliveryMode: (PHImageRequestOptionsDeliveryMode)deliveryMode];
+  [options setResizeMode: (PHImageRequestOptionsResizeModeFast)1];
   [options setNetworkAccessAllowed:YES];
   [options setProgressHandler:^(double progress, NSError *error, BOOL *stop,
           NSDictionary *info) {
