@@ -395,13 +395,17 @@ mixin IosPlugin on BasePlugin {
       "getAlbum",
       map,
     );
-    
+
     if (result == null) {
       return null;
     }
 
     if (result["errorMsg"] != null) {
       print("errorMsg");
+      return null;
+    }
+
+    if (result["id"] == null) {
       return null;
     }
 
