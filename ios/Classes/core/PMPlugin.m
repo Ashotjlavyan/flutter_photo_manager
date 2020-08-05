@@ -292,6 +292,14 @@
             [handler reply:[self convertToResult:dictionary]];
         }];
 
+      } else if ([@"getAlbum" isEqualToString:call.method]) {
+        NSString *name = call.arguments[@"name"];
+
+        [manager getAlbumWithName:name block:^(NSString *id, NSString *errorMsg) {
+            NSDictionary *dictionary = @{@"id": id, @"errorMsg": errorMsg};
+            [handler reply:[self convertToResult:dictionary]];
+        }];
+
       } else if ([@"removeInAlbum" isEqualToString:call.method]) {
         NSArray *assetId = call.arguments[@"assetId"];
         NSString *pathId = call.arguments[@"pathId"];

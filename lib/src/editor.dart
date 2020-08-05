@@ -111,6 +111,11 @@ class IosEditor {
     }
   }
 
+  /// if [parent] is null, the album will be added in root.
+  Future<AssetPathEntity> getAlbum(String name) {
+    return _plugin.iosGetAlbum(name);
+  }
+
   /// The [entity] and [path] isn't null.
   Future<bool> removeInAlbum(AssetEntity entity, AssetPathEntity path) async {
     if (entity == null || path == null) {

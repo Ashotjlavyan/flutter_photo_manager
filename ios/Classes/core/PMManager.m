@@ -1098,6 +1098,30 @@
   }
 }
 
+- (void)getAlbumWithName:(NSString *)name block:(void (^)(NSString *, NSString *))block {
+    __block NSString *targetId;
+    NSError *error;
+    [PHPhotoLibrary.sharedPhotoLibrary
+     performChangesAndWait:^{
+        PHFetchOptions *fetchOptions = [PHFetchOptions new];
+        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", name];
+        
+        PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                                              subtype:PHAssetCollectionSubtypeAny
+                                                                                              options:fetchOptions];
+        
+        if (result && result.count) {
+            targetId = result.firstObject.localIdentifier;
+        }
+        
+    } error:&error];
+    
+    if (error) {
+        NSLog(@"getAlbumWithName 1: error : %@", error);
+    }
+    block(targetId, error.localizedDescription);
+}
+
 - (void)removeInAlbumWithAssetId:(NSArray *)id albumId:(NSString *)albumId block:(void (^)(NSString *))block {
   PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumId] options:nil];
   PHAssetCollection *collection;

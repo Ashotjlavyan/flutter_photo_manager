@@ -386,6 +386,33 @@ mixin IosPlugin on BasePlugin {
       ..albumType = 1;
   }
 
+  Future<AssetPathEntity> iosGetAlbum(String name) async {
+    final map = {
+      "name": name,
+    };
+
+    final result = await _channel.invokeMethod(
+      "getAlbum",
+      map,
+    );
+    
+    if (result == null) {
+      return null;
+    }
+
+    if (result["errorMsg"] != null) {
+      print("errorMsg");
+      return null;
+    }
+
+    return AssetPathEntity()
+      ..id = result["id"]
+      ..name = name
+      ..isAll = false
+      ..assetCount = 0
+      ..albumType = 1;
+  }
+
   Future<bool> iosRemoveInAlbum(
       List<AssetEntity> entities, AssetPathEntity path) async {
     final result = await _channel.invokeMethod(
