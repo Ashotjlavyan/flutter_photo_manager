@@ -1122,6 +1122,36 @@
     block(targetId, error.localizedDescription);
 }
 
+- (void)addInAlbumWithAssetId:(NSArray *)id albumId:(NSString *)albumId block:(void (^)(NSString *))block {
+  PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumId] options:nil];
+  PHAssetCollection *collection;
+  if (result && result.count > 0) {
+    collection = result.firstObject;
+  } else {
+    block(@"Can't found the collection.");
+    return;
+  }
+
+  if (![collection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
+    block(@"The collection cannot add asset by user.");
+    return;
+  }
+
+  PHFetchResult<PHAsset *> *assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:id options:nil];
+  NSError *error;
+  [PHPhotoLibrary.sharedPhotoLibrary
+          performChangesAndWait:^{
+              PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:collection];
+              [request addAssets:assetResult];
+          } error:&error];
+  if (error) {
+    block([NSString stringWithFormat:@"Add error: %@", error]);
+    return;
+  }
+
+  block(nil);
+}
+
 - (void)removeInAlbumWithAssetId:(NSArray *)id albumId:(NSString *)albumId block:(void (^)(NSString *))block {
   PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumId] options:nil];
   PHAssetCollection *collection;

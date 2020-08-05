@@ -417,6 +417,24 @@ mixin IosPlugin on BasePlugin {
       ..albumType = 1;
   }
 
+  Future<bool> iosAddInAlbum(
+      List<AssetEntity> entities, AssetPathEntity path) async {
+    final result = await _channel.invokeMethod(
+      "addInAlbum",
+      {
+        "assetId": entities.map((e) => e.id).toList(),
+        "pathId": path.id,
+      },
+    );
+
+    if (result["msg"] != null) {
+      print("cannot add, cause by: ${result["msg"]}");
+      return false;
+    }
+
+    return true;
+  }
+
   Future<bool> iosRemoveInAlbum(
       List<AssetEntity> entities, AssetPathEntity path) async {
     final result = await _channel.invokeMethod(

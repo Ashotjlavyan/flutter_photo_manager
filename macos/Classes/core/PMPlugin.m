@@ -298,6 +298,18 @@
             [handler reply:[self convertToResult:id errorMsg:errorMsg]];
         }];
 
+      } else if ([@"addInAlbum" isEqualToString:call.method]) {
+        NSArray *assetId = call.arguments[@"assetId"];
+        NSString *pathId = call.arguments[@"pathId"];
+
+        [manager addInAlbumWithAssetId:assetId albumId:pathId block:^(NSString *msg) {
+            if (msg) {
+              [handler reply:@{@"msg": msg}];
+            } else {
+              [handler reply:@{@"success": @YES}];
+            }
+        }];
+
       } else if ([@"removeInAlbum" isEqualToString:call.method]) {
         NSArray *assetId = call.arguments[@"assetId"];
         NSString *pathId = call.arguments[@"pathId"];

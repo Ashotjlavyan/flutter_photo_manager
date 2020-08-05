@@ -117,6 +117,46 @@ class IosEditor {
   }
 
   /// The [entity] and [path] isn't null.
+  Future<bool> addInAlbum(AssetEntity entity, AssetPathEntity path) async {
+    if (entity == null || path == null) {
+      assert(entity != null, "");
+      assert(path != null, "");
+      return false;
+    }
+    if (path.albumType == 2 || path.isAll) {
+      assert(path.albumType == 1, "The path must is album");
+      assert(
+        !path.isAll,
+        "The ${path.name}'s asset can't be add. Use PhotoManager.editor.addAsset",
+      );
+      return false;
+    }
+    return _plugin.iosAddInAlbum([entity], path);
+  }
+
+  /// Add [list]'s items to [path] in batches.
+  Future<bool> addAssetsInAlbum(
+      List<AssetEntity> list, AssetPathEntity path) async {
+    if (list == null || path == null) {
+      assert(list != null, "");
+      assert(path != null, "");
+      return false;
+    }
+    if (list.isEmpty) {
+      return false;
+    }
+    if (path.albumType == 2 || path.isAll) {
+      assert(path.albumType == 1, "The path must is album");
+      assert(
+        !path.isAll,
+        "The ${path.name} can't be add. Use PhotoManager.editor.addAsset",
+      );
+      return false;
+    }
+    return _plugin.iosAddInAlbum(list, path);
+  }
+
+  /// The [entity] and [path] isn't null.
   Future<bool> removeInAlbum(AssetEntity entity, AssetPathEntity path) async {
     if (entity == null || path == null) {
       assert(entity != null, "");
