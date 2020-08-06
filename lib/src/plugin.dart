@@ -417,6 +417,38 @@ mixin IosPlugin on BasePlugin {
       ..albumType = 1;
   }
 
+  Future<List<AssetPathEntity>> iosGetAlbumsContains(String name) async {
+    final map = {
+      "name": name,
+    };
+
+    final result = await _channel.invokeMethod(
+      "getAlbumsContains",
+      map,
+    );
+
+    if (result == null) {
+      return [];
+    }
+
+    List<AssetPathEntity> assetPathEntitys = [];
+
+    List list = result["data"];
+
+    for (final Map item in list) {
+      final entity = AssetPathEntity()
+        ..id = item["id"]
+        ..name = item["name"]
+        ..isAll = item["isAll"]
+        ..assetCount = item["length"]
+        ..albumType = (item["albumType"] ?? 1);
+
+      assetPathEntitys.add(entity);
+    }
+
+    return assetPathEntitys;
+  }
+
   Future<bool> iosAddInAlbum(
       List<AssetEntity> entities, AssetPathEntity path) async {
     final result = await _channel.invokeMethod(

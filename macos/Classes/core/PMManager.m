@@ -1134,6 +1134,33 @@ resultHandler:(ResultHandler *)handler {
     block(targetId, error.localizedDescription);
 }
 
+- (void)getAlbumsWithContainsName:(NSString *)name block:(void (^)(NSArray<PMAssetPathEntity *> *, NSString *))block {
+    __block NSMutableArray<PMAssetPathEntity *> *array = [NSMutableArray new];
+    NSError *error;
+    [PHPhotoLibrary.sharedPhotoLibrary
+     performChangesAndWait:^{
+        PHFetchOptions *fetchOptions = [PHFetchOptions new];
+        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"title contains[c] %@", name];
+        
+        PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                                              subtype:PHAssetCollectionSubtypeAny
+                                                                                              options:fetchOptions];
+        
+        if (result && result.count) {
+            for (PHAssetCollection *collection in result) {
+                PMAssetPathEntity *pathEntity = [PMAssetPathEntity entityWithId:collection.localIdentifier name:collection.localizedTitle assetCount:0];
+                [array addObject:pathEntity];
+            }
+        }
+        
+    } error:&error];
+    
+    if (error) {
+        NSLog(@"getAlbumsWithContainsName 1: error : %@", error);
+    }
+    block(array, error.localizedDescription);
+}
+
 - (void)addInAlbumWithAssetId:(NSArray *)id albumId:(NSString *)albumId block:(void (^)(NSString *))block {
   PHFetchResult<PHAssetCollection *> *result = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumId] options:nil];
   PHAssetCollection *collection;

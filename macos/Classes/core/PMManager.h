@@ -56,7 +56,7 @@ typedef void (^AssetResult)(PMAssetEntity *);
 
 - (BOOL)existsWithId:(NSString *)assetId;
 
-- (NSString*)getTitleAsyncWithAssetId: (NSString *) assetId;
+- (NSString *)getTitleAsyncWithAssetId:(NSString *)assetId;
 
 - (void)getMediaUrl:(NSString *)assetId resultHandler:(ResultHandler *)handler;
 
@@ -71,6 +71,8 @@ typedef void (^AssetResult)(PMAssetEntity *);
 - (void)createAlbumWithName:(NSString *)name parentId:(NSString *)id block:(void (^)(NSString *, NSString *))block;
 
 - (void)getAlbumWithName:(NSString *)name block:(void (^)(NSString *, NSString *))block;
+
+- (void)getAlbumsWithContainsName:(NSString *)name block:(void (^)(NSArray<PMAssetPathEntity *> *, NSString *))block;
 
 - (void)addInAlbumWithAssetId:(NSArray *)id albumId:(NSString *)albumId block:(void (^)(NSString *))block;
 

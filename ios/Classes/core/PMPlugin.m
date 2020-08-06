@@ -298,6 +298,14 @@
             [handler reply:[self convertToResult:id errorMsg:errorMsg]];
         }];
 
+      } else if ([@"getAlbumsContains" isEqualToString:call.method]) {
+        NSString *name = call.arguments[@"name"];
+
+        [manager getAlbumsWithContainsName:name block:^(NSArray<PMAssetPathEntity *> *array, NSString *errorMsg) {
+            NSDictionary *dictionary = [ConvertUtils convertPathToMap:array];
+            [handler reply:dictionary];
+        }];
+
       } else if ([@"addInAlbum" isEqualToString:call.method]) {
         NSArray *assetId = call.arguments[@"assetId"];
         NSString *pathId = call.arguments[@"pathId"];
