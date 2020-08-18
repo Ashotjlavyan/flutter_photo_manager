@@ -71,6 +71,7 @@ class ConvertUtils {
       ..duration = data["duration"]
       ..modifiedDateSecond = data["modifiedDt"]
       ..typeInt = data["type"]
+      ..subTypeInt = data["subType"]
       ..longitude = data["lng"]
       ..latitude = data["lat"]
       ..title = data["title"];
