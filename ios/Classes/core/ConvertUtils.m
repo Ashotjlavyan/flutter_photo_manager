@@ -76,10 +76,12 @@
           @"favorite": @(asset.favorite),
           @"duration": @((long) asset.duration),
           @"type": @(typeInt),
-          @"modifiedDt": @(modifiedDt),
+          @"subType": @(asset.subType),
           @"lng": @(asset.location.coordinate.longitude),
           @"lat": @(asset.location.coordinate.latitude),
           @"title": needTitle ? [asset title] : @"",
+          @"modifiedDt": @(modifiedDt),
+
   };
 }
 
@@ -93,6 +95,7 @@
           @"duration": @(asset.duration),
           @"favorite": @(asset.favorite),
           @"type": @(asset.type),
+          @"subType": @(asset.subType),
           @"modifiedDt": @(asset.modifiedDt),
           @"lng": @(asset.lng),
           @"lat": @(asset.lat),

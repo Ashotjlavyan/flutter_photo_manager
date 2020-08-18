@@ -40,6 +40,7 @@ class ConvertUtils {
         ..duration = item["duration"]
         ..modifiedDateSecond = item["modifiedDt"]
         ..typeInt = item["type"]
+        ..subTypeInt = item["subType"]
         ..longitude = item["lng"]
         ..latitude = item["lat"]
         ..title = item["title"]

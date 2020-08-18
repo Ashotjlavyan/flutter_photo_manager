@@ -187,6 +187,11 @@ class AssetEntity {
   /// see [type]
   int typeInt;
 
+  /// Asset subTye int value.
+  ///
+  /// sub type of type
+  int subTypeInt;
+
   /// Duration of video, unit is second.
   ///
   /// If [type] is [AssetType.image], then it's value is 0.
