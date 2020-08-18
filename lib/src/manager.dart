@@ -273,6 +273,7 @@ class PhotoManager {
       ..duration = asset.duration
       ..modifiedDateSecond = asset.modifiedDateSecond
       ..typeInt = asset.typeInt
+      ..subTypeInt = asset.subTypeInt
       ..longitude = asset.longitude
       ..latitude = asset.latitude
       ..title = asset.title;
