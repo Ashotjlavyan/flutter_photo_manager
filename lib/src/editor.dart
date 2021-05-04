@@ -23,10 +23,10 @@ class Editor {
   ///
   /// in iOS is Recent.
   /// in Android is Picture.
-  Future<AssetEntity> saveImage(
+  Future<AssetEntity?> saveImage(
     Uint8List uint8List, {
-    String title,
-    String desc,
+    String? title,
+    String? desc,
   }) async {
     return _plugin.saveImage(uint8List, title: title, desc: desc);
   }
@@ -35,10 +35,10 @@ class Editor {
   ///
   /// in iOS is Recent.
   /// in Android is picture directory .(in android 28 or lower, If the path at the external storage, It will use the path.)
-  Future<AssetEntity> saveImageWithPath(
+  Future<AssetEntity?> saveImageWithPath(
     String path, {
-    String title,
-    String desc,
+    String? title,
+    String? desc,
   }) async {
     return _plugin.saveImageWithPath(path, title: title, desc: desc);
   }
@@ -47,11 +47,11 @@ class Editor {
   ///
   /// in iOS is Recent.
   /// in Android is video directory .(in android 28 or lower, If the path at the external storage, It will use the path.)
-  Future<AssetEntity> saveVideo(
+  Future<AssetEntity?> saveVideo(
     File file, {
-    String title,
-    String desc,
-    Duration duration,
+    String? title,
+    String? desc,
+    Duration? duration,
   }) async {
     return _plugin.saveVideo(
       file,
@@ -64,9 +64,9 @@ class Editor {
   ///
   /// In iOS, just something similar to a shortcut, it points to the same asset.
   /// In android, the asset file will produce a copy.
-  Future<AssetEntity> copyAssetToPath({
-    @required AssetEntity asset,
-    @required AssetPathEntity pathEntity,
+  Future<AssetEntity?> copyAssetToPath({
+    required AssetEntity asset,
+    required AssetPathEntity pathEntity,
   }) {
     assert(asset != null);
     assert(pathEntity != null);
@@ -80,11 +80,11 @@ class IosEditor {
   ///
   /// [parent] is nullable, if it's null, the folder will be create in root. If isn't null, the [AssetPathEntity.albumType] must be 2.
   /// The only exception, Recent can be specified, but the same as null.
-  Future<AssetPathEntity> createFolder(
+  Future<AssetPathEntity?>? createFolder(
     String name, {
-    AssetPathEntity parent,
+    AssetPathEntity? parent,
   }) {
-    if (parent == null || parent.isAll) {
+    if (parent == null || parent.isAll!) {
       return _plugin.iosCreateFolder(name, true, null);
     } else {
       if (parent.albumType == 1) {
@@ -96,11 +96,11 @@ class IosEditor {
   }
 
   /// if [parent] is null, the album will be added in root.
-  Future<AssetPathEntity> createAlbum(
+  Future<AssetPathEntity?>? createAlbum(
     String name, {
-    AssetPathEntity parent,
+    AssetPathEntity? parent,
   }) {
-    if (parent == null || parent.isAll) {
+    if (parent == null || parent.isAll!) {
       return _plugin.iosCreateAlbum(name, true, null);
     } else {
       if (parent.albumType == 1) {
@@ -112,7 +112,7 @@ class IosEditor {
   }
 
   /// The [name] isn't null.
-  Future<AssetPathEntity> getAlbum(String name) {
+  Future<AssetPathEntity?> getAlbum(String name) {
     return _plugin.iosGetAlbum(name);
   }
 
@@ -128,10 +128,10 @@ class IosEditor {
       assert(path != null, "");
       return false;
     }
-    if (path.albumType == 2 || path.isAll) {
+    if (path.albumType == 2 || path.isAll!) {
       assert(path.albumType == 1, "The path must is album");
       assert(
-        !path.isAll,
+        !path.isAll!,
         "The ${path.name}'s asset can't be add. Use PhotoManager.editor.addAsset",
       );
       return false;
@@ -150,10 +150,10 @@ class IosEditor {
     if (list.isEmpty) {
       return false;
     }
-    if (path.albumType == 2 || path.isAll) {
+    if (path.albumType == 2 || path.isAll!) {
       assert(path.albumType == 1, "The path must is album");
       assert(
-        !path.isAll,
+        !path.isAll!,
         "The ${path.name} can't be add. Use PhotoManager.editor.addAsset",
       );
       return false;
@@ -168,10 +168,10 @@ class IosEditor {
       assert(path != null, "");
       return false;
     }
-    if (path.albumType == 2 || path.isAll) {
+    if (path.albumType == 2 || path.isAll!) {
       assert(path.albumType == 1, "The path must is album");
       assert(
-        !path.isAll,
+        !path.isAll!,
         "The ${path.name}'s asset can't be remove. Use PhotoManager.editor.deleteAsset",
       );
       return false;
@@ -190,10 +190,10 @@ class IosEditor {
     if (list.isEmpty) {
       return false;
     }
-    if (path.albumType == 2 || path.isAll) {
+    if (path.albumType == 2 || path.isAll!) {
       assert(path.albumType == 1, "The path must is album");
       assert(
-        !path.isAll,
+        !path.isAll!,
         "The ${path.name} can't be remove. Use PhotoManager.editor.deleteAsset",
       );
       return false;
@@ -212,10 +212,10 @@ class IosEditor {
   }
 
   Future<bool> favoriteAsset(
-      {@required AssetEntity entity, @required bool favorite}) async {
+      {required AssetEntity entity, required bool favorite}) async {
     assert(entity != null);
     assert(favorite != null);
-    final result = await _plugin.favoriteAsset(entity.id, favorite);
+    final result = await (_plugin.favoriteAsset(entity.id, favorite) as FutureOr<bool>);
     if (result) {
       entity.isFavorite = favorite;
     }
@@ -225,8 +225,8 @@ class IosEditor {
 
 class AndroidEditor {
   Future<bool> moveAssetToAnother({
-    AssetEntity entity,
-    AssetPathEntity target,
+    AssetEntity? entity,
+    AssetPathEntity? target,
   }) async {
     if (!Platform.isAndroid) {
       assert(Platform.isAndroid);
@@ -236,10 +236,10 @@ class AndroidEditor {
     assert(entity != null);
     assert(target != null);
 
-    return _plugin.androidMoveAssetToPath(entity, target);
+    return _plugin.androidMoveAssetToPath(entity!, target!);
   }
 
-  Future<bool> removeAllNoExistsAsset() async {
+  Future<bool?> removeAllNoExistsAsset() async {
     assert(Platform.isAndroid);
     if (!Platform.isAndroid) {
       return false;

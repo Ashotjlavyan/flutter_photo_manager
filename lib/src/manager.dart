@@ -28,7 +28,7 @@ class PhotoManager {
     bool hasAll = true,
     bool onlyAll = false,
     RequestType type = RequestType.common,
-    FilterOptionGroup filterOption,
+    FilterOptionGroup? filterOption,
   }) async {
     assert(hasAll != null);
     assert(onlyAll != null);
@@ -85,25 +85,25 @@ class PhotoManager {
       page: page,
       pageCount: pageCount,
       type: entity.typeInt,
-      optionGroup: entity.filterOption,
+      optionGroup: entity.filterOption!,
     );
   }
 
   static Future<List<AssetEntity>> _getAssetWithRange({
-    @required AssetPathEntity entity,
-    @required int start,
-    @required int end,
+    required AssetPathEntity entity,
+    required int start,
+    required int end,
   }) {
     assert(entity != null && start != null && end != null);
-    if (end > entity.assetCount) {
-      end = entity.assetCount;
+    if (end > entity.assetCount!) {
+      end = entity.assetCount!;
     }
     return _plugin.getAssetWithRange(
       entity.id,
       typeInt: entity.typeInt,
       start: start,
       end: end,
-      optionGroup: entity.filterOption,
+      optionGroup: entity.filterOption!,
     );
   }
 
@@ -152,7 +152,7 @@ class PhotoManager {
   /// see [_NotifyManager]
   static void stopChangeNotify() => _notifyManager.stopHandleNotify();
 
-  static Future<File> _getFileWithId(String id, {bool isOrigin = false}) async {
+  static Future<File?> _getFileWithId(String? id, {bool isOrigin = false}) async {
     if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
       final path = await _plugin.getFullFile(id, isOrigin: isOrigin);
       if (path == null) {
@@ -163,11 +163,11 @@ class PhotoManager {
     return null;
   }
 
-  static Future<Uint8List> _getFullDataWithId(String id) async {
+  static Future<Uint8List?> _getFullDataWithId(String? id) async {
     return _plugin.getOriginBytes(id);
   }
 
-  static _getThumbDataWithId(String id,
+  static _getThumbDataWithId(String? id,
       {LoadOption option = const DefaultLoadOption(150, 150,
           format: ThumbFormat.jpeg, quality: 100)}) {
     return _plugin.getThumb(
@@ -176,21 +176,21 @@ class PhotoManager {
     );
   }
 
-  static Future<bool> _assetExistsWithId(String id) {
+  static Future<bool?> _assetExistsWithId(String? id) {
     return _plugin.assetExistsWithId(id);
   }
 
-  static Future<AssetPathEntity> fetchPathProperties(
+  static Future<AssetPathEntity?> fetchPathProperties(
     AssetPathEntity entity,
     DateTimeCond dateTimeCond,
   ) async {
     assert(entity != null);
     assert(dateTimeCond != null);
-    entity.filterOption.dateTimeCond = dateTimeCond;
+    entity.filterOption!.dateTimeCond = dateTimeCond;
     final result = await _plugin.fetchPathProperties(
       entity.id,
       entity.typeInt,
-      entity.filterOption,
+      entity.filterOption!,
     );
     if (result == null) {
       return null;
@@ -215,33 +215,33 @@ class PhotoManager {
     if (!Platform.isAndroid) {
       return false;
     }
-    final systemVersion = await _plugin.getSystemVersion();
+    final systemVersion = await (_plugin.getSystemVersion() as FutureOr<String>);
     return int.parse(systemVersion) >= 29;
   }
 
-  static Future<String> systemVersion() async {
+  static Future<String?> systemVersion() async {
     return _plugin.getSystemVersion();
   }
 
-  static Future<bool> setCacheAtOriginBytes(bool cache) =>
+  static Future<bool?> setCacheAtOriginBytes(bool cache) =>
       _plugin.cacheOriginBytes(cache);
 
-  static Future<Uint8List> _getOriginBytes(AssetEntity assetEntity) async {
+  static Future<Uint8List?> _getOriginBytes(AssetEntity assetEntity) async {
     assert(Platform.isAndroid || Platform.isIOS || Platform.isMacOS);
     if (Platform.isAndroid) {
       if (await _isAndroidQ()) {
         return _plugin.getOriginBytes(assetEntity.id);
       } else {
-        return (await assetEntity.originFile).readAsBytes();
+        return (await assetEntity.originFile)!.readAsBytes();
       }
     } else if (Platform.isIOS || Platform.isMacOS) {
-      final file = await assetEntity.originFile;
+      final file = await (assetEntity.originFile as FutureOr<File>);
       return file.readAsBytes();
     }
     return null;
   }
 
-  static Future<String> _getMediaUrl(AssetEntity assetEntity) {
+  static Future<String?> _getMediaUrl(AssetEntity assetEntity) {
     assert(Platform.isAndroid || Platform.isIOS || Platform.isMacOS);
     return _plugin.getMediaUrl(assetEntity);
   }
@@ -252,10 +252,10 @@ class PhotoManager {
     return _plugin.getSubPathEntities(assetPathEntity);
   }
 
-  static Future<AssetEntity> refreshAssetProperties(AssetEntity src) async {
+  static Future<AssetEntity?> refreshAssetProperties(AssetEntity src) async {
     assert(src.id != null);
-    final Map<dynamic, dynamic> map =
-        await _plugin.getPropertiesFromAssetEntity(src.id);
+    final Map<dynamic, dynamic>? map =
+        await (_plugin.getPropertiesFromAssetEntity(src.id) as FutureOr<Map<dynamic, dynamic>?>);
 
     final asset = ConvertUtils.convertToAsset(map);
 

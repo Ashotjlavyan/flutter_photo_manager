@@ -4,8 +4,8 @@ class ConvertUtils {
   static List<AssetPathEntity> convertPath(
     Map data, {
     int type = 0,
-    DateTime dt,
-    FilterOptionGroup optionGroup,
+    DateTime? dt,
+    FilterOptionGroup? optionGroup,
   }) {
     List<AssetPathEntity> result = [];
 
@@ -52,12 +52,12 @@ class ConvertUtils {
     return result;
   }
 
-  static AssetEntity convertToAsset(Map map) {
+  static AssetEntity? convertToAsset(Map? map) {
     if (map == null) {
       return null;
     }
 
-    Map data = map["data"];
+    Map? data = map["data"];
 
     if (data == null) {
       return null;

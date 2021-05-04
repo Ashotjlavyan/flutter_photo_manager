@@ -26,13 +26,13 @@ class FilterOptionGroup {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> result = {};
     if (_map.containsKey(AssetType.image)) {
-      result["image"] = _map[AssetType.image].toMap();
+      result["image"] = _map[AssetType.image]!.toMap();
     }
     if (_map.containsKey(AssetType.video)) {
-      result["video"] = _map[AssetType.video].toMap();
+      result["video"] = _map[AssetType.video]!.toMap();
     }
     if (_map.containsKey(AssetType.audio)) {
-      result["audio"] = _map[AssetType.audio].toMap();
+      result["audio"] = _map[AssetType.audio]!.toMap();
     }
 
     result["date"] = dateTimeCond.toMap();
@@ -127,8 +127,8 @@ class DateTimeCond {
   final bool asc;
 
   const DateTimeCond({
-    this.min,
-    this.max,
+    required this.min,
+    required this.max,
     this.asc = false, // default desc
   })  : assert(min != null),
         assert(max != null),
@@ -143,9 +143,9 @@ class DateTimeCond {
   }
 
   DateTimeCond copyWith({
-    final DateTime min,
-    final DateTime max,
-    final bool asc,
+    final DateTime? min,
+    final DateTime? max,
+    final bool? asc,
   }) {
     return DateTimeCond(
       min: min ?? this.min,
