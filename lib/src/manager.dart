@@ -152,7 +152,8 @@ class PhotoManager {
   /// see [_NotifyManager]
   static void stopChangeNotify() => _notifyManager.stopHandleNotify();
 
-  static Future<File?> _getFileWithId(String? id, {bool isOrigin = false}) async {
+  static Future<File?> _getFileWithId(String? id,
+      {bool isOrigin = false}) async {
     if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
       final path = await _plugin.getFullFile(id, isOrigin: isOrigin);
       if (path == null) {
@@ -215,7 +216,7 @@ class PhotoManager {
     if (!Platform.isAndroid) {
       return false;
     }
-    final systemVersion = await (_plugin.getSystemVersion() as FutureOr<String>);
+    final systemVersion = await (_plugin.getSystemVersion()) ?? "0";
     return int.parse(systemVersion) >= 29;
   }
 
@@ -235,8 +236,8 @@ class PhotoManager {
         return (await assetEntity.originFile)!.readAsBytes();
       }
     } else if (Platform.isIOS || Platform.isMacOS) {
-      final file = await (assetEntity.originFile as FutureOr<File>);
-      return file.readAsBytes();
+      final file = await (assetEntity.originFile);
+      return file?.readAsBytes();
     }
     return null;
   }
@@ -255,7 +256,7 @@ class PhotoManager {
   static Future<AssetEntity?> refreshAssetProperties(AssetEntity src) async {
     assert(src.id != null);
     final Map<dynamic, dynamic>? map =
-        await (_plugin.getPropertiesFromAssetEntity(src.id) as FutureOr<Map<dynamic, dynamic>?>);
+        await _plugin.getPropertiesFromAssetEntity(src.id);
 
     final asset = ConvertUtils.convertToAsset(map);
 

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager/src/filter/load_option.dart';
@@ -76,7 +75,7 @@ class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
       "start": start,
       "end": end,
       "option": optionGroup.toMap(),
-    }) as FutureOr<Map<dynamic, dynamic>>);
+    }));
 
     return ConvertUtils.convertToAssetList(map);
   }
@@ -142,7 +141,7 @@ class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
 
   Future<List<String>> deleteWithIds(List<String> ids) async {
     final List<dynamic> deleted =
-        (await (_channel.invokeMethod("deleteWithIds", {"ids": ids}) as FutureOr<List<dynamic>>));
+        (await (_channel.invokeMethod("deleteWithIds", {"ids": ids})));
     return deleted.cast<String>();
   }
 
@@ -214,7 +213,7 @@ class Plugin with BasePlugin, IosPlugin, AndroidPlugin {
 
   Future<LatLng> getLatLngAsync(AssetEntity assetEntity) async {
     if (Platform.isAndroid) {
-      final version = int.parse(await (getSystemVersion() as FutureOr<String>));
+      final version = int.parse((await getSystemVersion()) ?? "0");
       if (version >= 29) {
         final map = await _channel
             .invokeMethod("getLatLngAndroidQ", {"id": assetEntity.id});
