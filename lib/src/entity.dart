@@ -271,7 +271,7 @@ class AssetEntity {
   Future<Uint8List?> get originBytes => PhotoManager._getOriginBytes(this);
 
   /// thumb data , for display
-  Future<Uint8List> get thumbData => PhotoManager._getThumbDataWithId(id);
+  Future<Uint8List?> get thumbData => PhotoManager._getThumbDataWithId(id);
 
   /// get thumb with size
   Future<Uint8List>? thumbDataWithSize(LoadOption option) {
