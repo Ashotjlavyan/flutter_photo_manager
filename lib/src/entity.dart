@@ -91,7 +91,8 @@ class AssetPathEntity {
   }
 
   /// The [start] and [end] like the [String.substring].
-  Future<List<AssetEntity>> getAssetListRange({required int start, required int end}) async {
+  Future<List<AssetEntity>> getAssetListRange(
+      {required int start, required int end}) async {
     assert(this.albumType == 1, "Just album type can get asset.");
     assert(start >= 0, "The start must better than 0.");
     assert(end > start, "The end must better than start.");
@@ -274,10 +275,9 @@ class AssetEntity {
   Future<Uint8List?> get thumbData => PhotoManager._getThumbDataWithId(id);
 
   /// get thumb with size
-  Future<Uint8List>? thumbDataWithSize(LoadOption option) {
+  Future<Uint8List?> thumbDataWithSize(LoadOption option) async {
     assert(option.width > 0 && option.height > 0,
         "The width and height must better 0.");
-    assert(option.format != null, "The format must not be null.");
     assert(option.quality > 0 && option.quality <= 100,
         "The quality must between 0 and 100");
 
